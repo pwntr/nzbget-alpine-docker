@@ -13,8 +13,8 @@ sed -n "s/^.*stable-download.*: \"\(.*\)\".*/\1/p" | \
 wget --no-check-certificate -i - -O nzbget-latest-bin-linux.run || \
 echo "*** Download failed ***"
 
-# let's install it (defaults to the "nzbget directory")
-RUN sh nzbget-latest-bin-linux.run
+# let's install it (defaults to the "nzbget directory") and delete the installer afterwards
+RUN sh nzbget-latest-bin-linux.run && rm nzbget-latest-bin-linux.run
 
 # and off we go!
 RUN nzbget/nzbget -s -o OutputMode=log
