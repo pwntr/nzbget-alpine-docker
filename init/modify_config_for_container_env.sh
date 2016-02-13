@@ -8,9 +8,9 @@ fi
 
 # modify some options to match our container environment and use docker's logging only
 sed -i -e "s#\(MainDir=\).*#\1/downloads#g" /config/nzbget.conf
-sed -i -e "s#\(WriteLog=\).*#\none#g" /config/nzbget.conf
-sed -i -e "s#\(ErrorTarget=\).*#\screen#g" /config/nzbget.conf
-sed -i -e "s#\(WarningTarget=\).*#\screen#g" /config/nzbget.conf
-sed -i -e "s#\(InfoTarget=\).*#\screen#g" /config/nzbget.conf
-sed -i -e "s#\(DetailTarget=\).*#\screen#g" /config/nzbget.conf
-sed -i -e "s#\(DebugTarget=\).*#\screen#g" /config/nzbget.conf
+sed -i -e "s#\(WriteLog=\).*#\1none#g" /config/nzbget.conf
+sed -i -e "s#\(ErrorTarget=\).*#\1screen#g" /config/nzbget.conf
+sed -i -e "s#\(WarningTarget=\).*#\1screen#g" /config/nzbget.conf
+sed -i -e "s#\(InfoTarget=\).*#\1screen#g" /config/nzbget.conf
+sed -i -e "s#\(DetailTarget=\).*#\1screen#g" /config/nzbget.conf
+sed -i -e "s#\(DebugTarget=\).*#\1screen#g" /config/nzbget.conf
