@@ -5,6 +5,9 @@ LABEL Description="Simple and lightweight nzbget docker container, based on Alpi
 # update the base system
 RUN apk update && apk upgrade
 
+# we need the real wget, the one incl. with Alpine's busybox is lacking some options
+RUN apk add wget
+
 # download the latest nzbget version
 RUN wget -O - http://nzbget.net/info/nzbget-version-linux.json | \
 sed -n "s/^.*stable-download.*: \"\(.*\)\".*/\1/p" | \
@@ -21,4 +24,4 @@ VOLUME /config /downloads /logs
 EXPOSE 6789
 
 # set some defaults and start nzbget in server and log mode
-ENTRYPOINT ["nzbget/nzbget", "-s", "-o", "outputmode=log"]
+ENTRYPOINT ["nzbget/nzbget", "-s", "-o", "OutputMode=log"]
