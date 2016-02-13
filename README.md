@@ -1,5 +1,9 @@
 # nzbget-alpine-docker
-A simple and super lightweight nzbget docker container, based on the latest Alpine Linux base image.
+A simple and super lightweight nzbget docker container, based on the latest Alpine Linux base image 🐧🐋💻.
+
+Always shipped with the latest nzbget stable version!
 
 Run it:
-  $ docker run -d -p 6789:6789 pwntr/nzbget-alpine-docker
+```shell
+docker run -d -p 6789:6789 -v /path/to/config:/config -v /path/to/downloads:/downloads pwntr/nzbget-alpine
+```

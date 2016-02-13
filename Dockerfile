@@ -17,11 +17,17 @@ echo "*** Download failed ***"
 # let's install it (defaults to the "nzbget" directory) and delete the installer file afterwards
 RUN sh nzbget-latest-bin-linux.run && rm nzbget-latest-bin-linux.run
 
-# useful mappings
-VOLUME /config /downloads /logs
+RUN mkdir /config && mkdir /downloads
+
+# check for and modify the config for our container. Yes, logging is oppinionated. We use docker log instead of wirting to a file.
+COPY init/modify_config_for_container_env.sh /
+RUN chmod -v +x /modify_config_for_container_env.sh && sh modify_config_for_container_env.sh && rm modify_config_for_container_env.sh
+
+# volume mappings
+VOLUME /config /downloads
 
 # exposes nzbget's default port
 EXPOSE 6789
 
 # set some defaults and start nzbget in server and log mode
-ENTRYPOINT ["nzbget/nzbget", "-s", "-o", "OutputMode=log"]
+ENTRYPOINT ["nzbget/nzbget", "-s", "-o", "OutputMode=log", "-c", "/config/nzbget.conf"]
