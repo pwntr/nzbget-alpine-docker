@@ -8,7 +8,7 @@ Quick start:
 docker run -d -p 6789:6789 -v /path/to/downloads:/downloads --name nzbget pwntr/nzbget-alpine
 ```
 
-With you own config (make sure to adjust the paths and your logging preferences inside your config file):
+With your own config (make sure to adjust the paths and your logging preferences inside your config file):
 ```shell
 docker run -d -p 6789:6789 -v /path/to/config:/config -v /path/to/downloads:/downloads --name nzbget pwntr/nzbget-alpine
 ```

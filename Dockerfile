@@ -17,6 +17,15 @@ echo "*** Download failed ***"
 # we don't need GNU wget anymore (busybox' wget will still be available). Also, clear the apk cache:
 RUN apk del wget && rm -rf /var/cache/apk/*
 
+# add a non-root system (-S) user and group called "nzbget" with no password
+RUN addgroup -S nzbget && adduser -S -D nzbget -G nzbget
+
+# change permissions of installer
+RUN chown nzbget:nzbget nzbget-latest-bin-linux.run
+
+# not root anyomre going forward
+USER nzbget
+
 # let's install it (defaults to the "nzbget" directory) and delete the installer file afterwards
 RUN sh nzbget-latest-bin-linux.run && rm nzbget-latest-bin-linux.run
 
