@@ -10,7 +10,7 @@ apk add wget
 addgroup -S nzbget && adduser -S -D nzbget -G nzbget
 
 # create the install dir and volume mount points
-mkdir nzbget && mkdir /config && mkdir /downloads
+mkdir /nzbget && mkdir /config && mkdir /downloads
 
 # download the latest nzbget version
 wget -O - http://nzbget.net/info/nzbget-version-linux.json | \
@@ -19,10 +19,10 @@ wget --no-check-certificate -i - -O /setup/nzbget-latest-bin-linux.run || \
 echo "*** Download failed ***"
 
 # let's install nzbget (defaults to the "/nzbget" directory)
-sh nzbget-latest-bin-linux.run --destdir /nzbget
+sh /setup/nzbget-latest-bin-linux.run --destdir /nzbget
 
 # check for and modify the config for our container
-sh setup/modify_config_for_container_env.sh
+sh /setup/modify_config_for_container_env.sh
 
 # change the owner accordingly
 chown -R nzbget:nzbget /nzbget /config /downloads /setup/nzbget-latest-bin-linux.run
