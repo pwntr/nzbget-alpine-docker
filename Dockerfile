@@ -2,46 +2,24 @@ FROM alpine:latest
 MAINTAINER Peter Winter <peter@pwntr.com>
 LABEL Description="Simple and lightweight nzbget docker container, based on Alpine Linux." Version="0.1"
 
-# update the base system
-RUN apk update && apk upgrade
+# copy init files
+RUN mkdir /setup
+COPY setup/* /setup/
 
-# we need the real (GNU) wget, the one incl. with Alpine's busybox is lacking some options
-RUN apk add wget
+# make the escripts executable and run the setup
+RUN chmod -v +x setup/*.sh && sh setup/setup.sh
 
-# download the latest nzbget version
-RUN wget -O - http://nzbget.net/info/nzbget-version-linux.json | \
-sed -n "s/^.*stable-download.*: \"\(.*\)\".*/\1/p" | \
-wget --no-check-certificate -i - -O nzbget-latest-bin-linux.run || \
-echo "*** Download failed ***"
-
-# we don't need GNU wget anymore (busybox' wget will still be available). Also, clear the apk cache:
-RUN apk del wget && rm -rf /var/cache/apk/*
-
-# add a non-root system (-S) user and group called "nzbget" with no password
-RUN addgroup -S nzbget && adduser -S -D nzbget -G nzbget
-
-# change owner of installer and nzbget dir to our new nzbget user
-RUN chown nzbget:nzbget nzbget-latest-bin-linux.run
-RUN mkdir nzbget && chown -R nzbget:nzbget nzbget
-
-# not root anymore going forward
-USER nzbget
-
-# let's install it (defaults to the "/nzbget" directory) and delete the installer file afterwards
-RUN nzbget-latest-bin-linux.run
-RUN rm nzbget-latest-bin-linux.run
-
-RUN mkdir /config && mkdir /downloads
-
-# check for and modify the config for our container. Yes, logging is oppinionated. We use docker log instead of wirting to a file.
-COPY init/modify_config_for_container_env.sh /
-RUN chmod -v +x /modify_config_for_container_env.sh && sh modify_config_for_container_env.sh && rm modify_config_for_container_env.sh
+# delete all the setup files
+RUN setup/cleanup.sh && rm -r /setup/
 
 # volume mappings
 VOLUME /config /downloads
 
 # exposes nzbget's default port
 EXPOSE 6789
+
+# not root anymore going forward
+USER nzbget
 
 # set some defaults and start nzbget in server and log mode
 ENTRYPOINT ["nzbget/nzbget", "-s", "-o", "OutputMode=log", "-c", "/config/nzbget.conf"]
