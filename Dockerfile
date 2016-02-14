@@ -5,7 +5,7 @@ LABEL Description="Simple and lightweight nzbget docker container, based on Alpi
 # update the base system
 RUN apk update && apk upgrade
 
-# we need the real wget, the one incl. with Alpine's busybox is lacking some options
+# we need the real (GNU) wget, the one incl. with Alpine's busybox is lacking some options
 RUN apk add wget
 
 # download the latest nzbget version
@@ -13,6 +13,9 @@ RUN wget -O - http://nzbget.net/info/nzbget-version-linux.json | \
 sed -n "s/^.*stable-download.*: \"\(.*\)\".*/\1/p" | \
 wget --no-check-certificate -i - -O nzbget-latest-bin-linux.run || \
 echo "*** Download failed ***"
+
+# we don't need GNU wget anymore (busybox' wget will still be available). Also, clear the apk cache:
+RUN apk del wget && rm -rf /var/cache/apk/*
 
 # let's install it (defaults to the "nzbget" directory) and delete the installer file afterwards
 RUN sh nzbget-latest-bin-linux.run && rm nzbget-latest-bin-linux.run
