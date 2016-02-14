@@ -20,8 +20,9 @@ RUN apk del wget && rm -rf /var/cache/apk/*
 # add a non-root system (-S) user and group called "nzbget" with no password
 RUN addgroup -S nzbget && adduser -S -D nzbget -G nzbget
 
-# change permissions of installer
+# change permissions of installer and nzbget dir
 RUN chown nzbget:nzbget nzbget-latest-bin-linux.run
+RUN mkdir nzbget && chown -R nzbget:nzbget nzbget
 
 # not root anyomre going forward
 USER nzbget
