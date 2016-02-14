@@ -1,4 +1,4 @@
-# nzbget-alpine-docker
+# nzbget-alpine
 A simple and super lightweight nzbget docker container, based on the latest Alpine Linux base image 🐧🐋💻.
 
 Always shipped with the latest stable nzbget version! Providing a path to your own config is optional.
