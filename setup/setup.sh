@@ -6,8 +6,8 @@ apk update && apk upgrade
 # we need the real (GNU) wget, the one incl. with Alpine's busybox is lacking some options
 apk add wget
 
-# add a non-root system (-S) user and group called "nzbget" with no password and gid/uid set to 1000
-addgroup -S -g 1000 nzbget && adduser -S -D nzbget -G nzbget -u 1000
+# add a non-root user and group called "nzbget" with no password, no home dir, and gid/uid set to 1000
+addgroup -g 1000 nzbget && adduser -H -D nzbget -G nzbget -u 1000
 
 # create the install dir and volume mount points
 mkdir /nzbget && mkdir /config && mkdir /downloads
