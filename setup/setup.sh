@@ -26,3 +26,9 @@ sh /setup/modify_config_for_container_env.sh
 
 # change the owner accordingly
 chown -R nzbget:nzbget /nzbget /config /downloads /setup/nzbget-latest-bin-linux.run
+
+# we don't need GNU wget anymore (busybox' wget will still be available).
+apk del wget
+
+# also, clear the apk cache:
+rm -rf /var/cache/apk/*
