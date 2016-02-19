@@ -10,7 +10,7 @@ COPY setup/* /setup/
 RUN chmod -v +x /setup/*.sh && sh /setup/setup.sh
 
 # delete all the setup files
-RUN /setup/cleanup.sh && rm -r /setup/
+RUN rm -r /setup/
 
 # volume mappings
 VOLUME /config /downloads
